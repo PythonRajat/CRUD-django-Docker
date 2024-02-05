@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>Add New Student</h3>
+<div class='row1'>
+    <div class='col1'>
+        <form method='POST'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button id='btn'>Submit</button>
+        </form>
+    </div>
+    <div class='col2'>
+        
+        <h2>Here will display details</h2>
+        {% if stu %}
+        <table class='rec-table'>
+            <tr>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Passwd</td>
+                <td>Action</td>
+            </tr>
+            {% for item in stu %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.password }}</td>
+                <td>
+                    <button id='edit-bt'><a href="{% url 'updaterec' item.id %}">Edit</a></button>
+                    <form method='POST' action='{% url 'deleterec' item.id %}'>
+                        {% csrf_token %}
+                        <input type='submit' id='del-bt' value='Delete'>
+                    </form>
+                </td>                
+            </tr>
+                    
+            {% endfor %}
+        </table>
+        {% else %}
+            <h1>There is no Record!</h1>
+        {% endif %}
+    </div>
+</div><br>
+<h3>Add New Teacher</h3>
+<div class='row2'>
+    <div class='col1'>
+        <form method='POST'>
+            {% csrf_token %}
+            <label>TName : </label><br>
+            <input type="text" placeholder='Teacher name' class='form-input' name='tname'><br>
+            <label>Email : </label><br>
+            <input type="email" placeholder='Teacher Email' class='form-input' name='temail'><br>
+            <label>Password : </label><br>
+            <input type="password" class='form-input' name='pwd'><br><br>
+            <input type='submit' id='btn' value='Add Record'>
+        </form>
+    </div>
+    <div class='col2'>
+        <h2>Here will display details</h2>
+    </div>
+</div>
+
+
+{% endblock %}
