@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres-alpine
+    volumes: 
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/crudproj
+    image: crudproj-image
+    container_name: crudproj-web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+volumes:
+  db-data:
+    driver: local
